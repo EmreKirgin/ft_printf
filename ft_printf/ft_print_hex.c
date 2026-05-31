@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekirgin <ekirgin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/30 12:16:02 by ekirgin           #+#    #+#             */
-/*   Updated: 2026/05/30 12:50:24 by ekirgin          ###   ########.fr       */
+/*   Created: 2026/05/28 16:12:08 by ekirgin           #+#    #+#             */
+/*   Updated: 2026/05/28 16:12:09 by ekirgin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ft_print_hex_base(unsigned int n, char *base)
+static int	ft_print_hex_base(unsigned int n, const char *base)
 {
 	int	count;
 

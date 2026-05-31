@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekirgin <ekirgin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/30 12:15:30 by ekirgin           #+#    #+#             */
-/*   Updated: 2026/05/30 12:22:37 by ekirgin          ###   ########.fr       */
+/*   Created: 2026/05/28 16:11:46 by ekirgin           #+#    #+#             */
+/*   Updated: 2026/05/28 16:53:44 by ekirgin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_print_char(int c)
 {
-	char	ch,
+	char	ch;
 
 	ch = (char)c;
 	write(1, &ch, 1);

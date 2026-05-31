@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekirgin <ekirgin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/30 12:15:48 by ekirgin           #+#    #+#             */
-/*   Updated: 2026/05/30 12:34:15 by ekirgin          ###   ########.fr       */
+/*   Created: 2026/05/28 16:11:56 by ekirgin           #+#    #+#             */
+/*   Updated: 2026/05/28 16:11:58 by ekirgin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_print_number(long n)
 {
 	int	count;
-	
+
 	count = 0;
 	if (n < 0)
 	{
