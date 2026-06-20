@@ -47,7 +47,7 @@ int	main(void)
 	compare_returns(p_ret, ft_ret);
 
 	test_header("EMPTY STRING");
-	p_ret = printf("");
+	p_ret = 0;
 	ft_ret = ft_printf("");
 	compare_returns(p_ret, ft_ret);
 

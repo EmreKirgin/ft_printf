@@ -1,12 +1,18 @@
-*This project has been created as part of the 42 curriculum by ekirgin.*
-
 # ft_printf
 
-## Description
+*This project was created as part of the 42 curriculum by ekirgin.*
 
-`ft_printf` is a 42 project that recreates a simplified version of the standard C `printf()` function.
+## Overview
 
-The goal of this project is to understand variadic functions in C, formatted output, type-specific argument handling, and character counting. The final result is a static library named `libftprintf.a`, which contains the function:
+`ft_printf` is a custom implementation of a simplified version of the standard C `printf()` function. The project focuses on variadic functions, formatted output, type-specific argument handling, recursion, and accurate character counting.
+
+The final output is a static library:
+
+```text
+libftprintf.a
+```
+
+The library exposes one main function:
 
 ```c
 int ft_printf(const char *format, ...);
@@ -14,7 +20,9 @@ int ft_printf(const char *format, ...);
 
 `ft_printf` writes formatted output to standard output and returns the number of characters printed.
 
-This implementation covers the mandatory conversions required by the subject:
+## Supported Conversions
+
+This implementation covers the mandatory conversions required by the 42 subject.
 
 | Conversion | Description |
 |---|---|
@@ -24,52 +32,131 @@ This implementation covers the mandatory conversions required by the subject:
 | `%d` | Prints a signed decimal integer |
 | `%i` | Prints a signed decimal integer |
 | `%u` | Prints an unsigned decimal integer |
-| `%x` | Prints a hexadecimal number in lowercase |
-| `%X` | Prints a hexadecimal number in uppercase |
+| `%x` | Prints an unsigned hexadecimal number in lowercase |
+| `%X` | Prints an unsigned hexadecimal number in uppercase |
 | `%%` | Prints a percent sign |
 
-## Instructions
+## Project Structure
 
-### Compilation
+```text
+.
+├── .github/
+│   └── workflows/
+│       └── c-build.yml
+├── .gitignore
+├── README.md
+├── ft_printf/
+│   ├── Makefile
+│   ├── ft_printf.c
+│   ├── ft_printf.h
+│   ├── ft_print_char.c
+│   ├── ft_print_hex.c
+│   ├── ft_print_number.c
+│   └── ft_print_pointer.c
+└── ft_printf_test/
+    ├── Makefile
+    ├── compare_output.c
+    └── main.c
+```
 
-To compile the library, run:
+### Source folder
+
+The `ft_printf/` folder contains the library implementation and the Makefile that builds `libftprintf.a`.
+
+### Test folder
+
+The `ft_printf_test/` folder contains local test programs that compare `ft_printf` with the standard `printf` for the mandatory conversion specifiers and several edge cases.
+
+It contains two kinds of tests:
+
+- `main.c`: checks return values against `printf`
+- `compare_output.c`: checks both printed output and return values against `printf`
+
+The test folder is not part of the official 42 submission. It is included to make local verification easier and to document how the function behaves.
+
+## Build Instructions
+
+From the repository root, compile the library with:
 
 ```bash
+make -C ft_printf
+```
+
+This creates:
+
+```text
+ft_printf/libftprintf.a
+```
+
+You can also build directly from inside the implementation folder:
+
+```bash
+cd ft_printf
 make
 ```
 
-This creates the static library:
+## Cleaning
 
-```text
-libftprintf.a
-```
-
-### Cleaning object files
+Remove object files:
 
 ```bash
-make clean
+make -C ft_printf clean
 ```
 
-### Full clean
+Remove object files and the static library:
 
 ```bash
-make fclean
+make -C ft_printf fclean
 ```
 
-### Rebuild
+Rebuild from scratch:
 
 ```bash
+make -C ft_printf re
+```
+
+## Running the Test Folder
+
+From the repository root:
+
+```bash
+make -C ft_printf_test re
+make -C ft_printf_test run
+make -C ft_printf_test compare
+```
+
+Or from inside the test folder:
+
+```bash
+cd ft_printf_test
 make re
+make run
+make compare
 ```
 
-### Example usage
+The test programs check return values and output against `printf` for cases such as:
 
-Create a test file, for example `main.c`:
+- Basic text
+- Empty format string
+- Characters, including `\0`
+- Strings and null strings
+- Signed integers with `INT_MIN` and `INT_MAX`
+- Unsigned integers with `UINT_MAX`
+- Lowercase and uppercase hexadecimal output
+- Pointer output, including null pointers
+- Percent signs
+- Mixed format strings
+- Many conversions in one format string
+- A trailing percent sign as a crash-safety test
+
+## Example Usage
+
+Create a small `main.c` file:
 
 ```c
 #include "ft_printf.h"
 
-int	main(void)
+int main(void)
 {
 	ft_printf("Hello %s!\n", "42");
 	ft_printf("Number: %d\n", -42);
@@ -78,10 +165,10 @@ int	main(void)
 }
 ```
 
-Compile it with:
+Compile it with the library:
 
 ```bash
-cc -Wall -Wextra -Werror main.c libftprintf.a -o test
+cc -Wall -Wextra -Werror main.c ft_printf/libftprintf.a -Ift_printf -o test
 ```
 
 Run it:
@@ -90,21 +177,27 @@ Run it:
 ./test
 ```
 
-## Implementation Overview
+## Implementation Notes
 
-The project is split into small helper functions to keep the code readable and easy to test.
+The implementation is split into small helper functions to keep the code readable and maintainable.
+
+| File | Purpose |
+|---|---|
+| `ft_printf.c` | Main parser and conversion dispatcher |
+| `ft_printf.h` | Header file with function prototypes |
+| `ft_print_char.c` | Character and string printing |
+| `ft_print_number.c` | Signed and unsigned decimal printing |
+| `ft_print_hex.c` | Lowercase and uppercase hexadecimal printing |
+| `ft_print_pointer.c` | Pointer address printing |
+| `Makefile` | Builds the static library |
 
 ### Main parser
 
-The `ft_printf` function loops through the format string character by character.
-
-If the current character is not `%`, it is printed directly with `ft_print_char`.
-
-If the current character is `%`, the next character is treated as a conversion specifier, and the correct helper function is called.
+`ft_printf` iterates through the format string character by character. Normal characters are printed directly. When a `%` character is found, the next character is interpreted as a conversion specifier and passed to the dispatcher.
 
 ### Conversion dispatcher
 
-The conversion dispatcher receives the character after `%` and calls the matching helper function:
+The dispatcher maps each supported specifier to the correct helper function.
 
 | Specifier | Function used |
 |---|---|
@@ -118,65 +211,72 @@ The conversion dispatcher receives the character after `%` and calls the matchin
 | `%X` | `ft_print_hex` |
 | `%%` | `ft_print_char` |
 
-## Algorithm and Data Structure Explanation
+### Variadic arguments
 
-This project does not require complex data structures. The main data structure used is `va_list`, which allows access to a variable number of arguments.
+The project uses `va_list`, `va_start`, `va_arg`, and `va_end` from `<stdarg.h>` to access the variable number of arguments passed to `ft_printf`.
 
-The algorithm follows these steps:
+### Character counting
 
-1. Initialize a `va_list` with `va_start`.
-2. Iterate through the format string.
-3. Print normal characters directly.
-4. When `%` is found, inspect the next character.
-5. Retrieve the correct argument type with `va_arg`.
-6. Print the value using the correct helper function.
-7. Add each helper function's return value to the total character count.
-8. Clean up the `va_list` with `va_end`.
-9. Return the total number of printed characters.
+Each helper function returns the number of characters it prints. `ft_printf` adds these values and returns the total count, matching the expected behavior of `printf` for the supported conversions.
 
-## Files
+## Limitations
 
-| File | Purpose |
-|---|---|
-| `ft_printf.c` | Main parser and conversion dispatcher |
-| `ft_printf.h` | Header file with function prototypes |
-| `ft_print_char.c` | Character and string printing |
-| `ft_print_number.c` | Signed and unsigned decimal printing |
-| `ft_print_hex.c` | Lowercase and uppercase hexadecimal printing |
-| `ft_print_pointer.c` | Pointer address printing |
-| `Makefile` | Builds the static library |
+This project implements the mandatory part of the 42 `ft_printf` subject. It does not implement optional formatting features such as:
 
-## Testing
+- Field width
+- Precision
+- Flags such as `-`, `0`, `.`, `#`, space, or `+`
+- Length modifiers such as `l`, `ll`, `h`, or `hh`
+- Floating-point conversions
 
-During development, the implementation was tested against the original `printf` using edge cases such as:
+## Automated Testing
 
-- Empty strings
-- Null strings
-- Null pointers
-- `INT_MIN`
-- `INT_MAX`
-- `UINT_MAX`
-- Lowercase and uppercase hexadecimal values
-- Multiple conversions in one format string
-- Return value comparison with `printf`
+This repository includes a GitHub Actions workflow in `.github/workflows/c-build.yml`.
+
+The workflow runs on every push and pull request. It checks that:
+
+- the `ft_printf` library compiles with `-Wall -Wextra -Werror`
+- the local test programs compile
+- the return-value tests pass
+- the output comparison tests pass
+
+## Verification Status
+
+The project was checked locally with:
+
+```bash
+make -C ft_printf re
+make -C ft_printf_test re
+make -C ft_printf_test run
+make -C ft_printf_test compare
+```
+
+The library and test programs compiled successfully with:
+
+```text
+-Wall -Wextra -Werror
+```
+
+The included test programs completed successfully for the tested cases.
 
 ## Resources
 
-The following resources were useful for understanding the concepts behind this project:
+Useful references for this project:
 
 - `man 3 printf`
 - `man 3 stdarg`
 - `man 2 write`
-- C documentation about variadic functions
-- The 42 `ft_printf` subject
+- 42 `ft_printf` subject
 
-## AI Usage
+## AI Usage Note
 
-AI was used as a learning assistant during this project.
+The core `ft_printf` implementation is my own work and corresponds to the version I passed at 42.
 
-It helped with:
+AI assistance was used only for repository improvement tasks, including:
 
-- Explaining variadic functions and `va_list`
-- Suggesting edge cases for testing
+- creating additional local test cases
+- adding output-comparison testing
+- setting up the GitHub Actions workflow
+- improving README structure and documentation
 
-AI was not used as a replacement for understanding the code. Each function was written, tested, and reviewed step by step.
+All AI-assisted additions were reviewed, tested, and adapted by me before being included in the repository.
