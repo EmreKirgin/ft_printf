@@ -1,0 +1,18 @@
+# Build output
+*.o
+*.a
+
+# Executables
+test_ft_printf
+compare_output
+
+# Temporary test output files
+printf_output.txt
+ft_output.txt
+
+# System files
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
