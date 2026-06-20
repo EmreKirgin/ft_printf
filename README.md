@@ -149,33 +149,6 @@ The test programs check return values and output against `printf` for cases such
 - Many conversions in one format string
 - A trailing percent sign as a crash-safety test
 
-## Example Usage
-
-Create a small `main.c` file:
-
-```c
-#include "ft_printf.h"
-
-int main(void)
-{
-	ft_printf("Hello %s!\n", "42");
-	ft_printf("Number: %d\n", -42);
-	ft_printf("Hex: %x\n", 255);
-	return (0);
-}
-```
-
-Compile it with the library:
-
-```bash
-cc -Wall -Wextra -Werror main.c ft_printf/libftprintf.a -Ift_printf -o test
-```
-
-Run it:
-
-```bash
-./test
-```
 
 ## Implementation Notes
 
